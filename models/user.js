@@ -10,6 +10,9 @@ const usermodel = new schema({
     password:{
         type:String
     },
+    phone:{
+        type:String
+    },
     role:{
         type:Boolean,
         default:false
