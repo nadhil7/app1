@@ -8,14 +8,23 @@ mongoose.connect(uri).then(()=>{
 })
 const app=express()
 app.use(express.urlencoded({extended:true}));
+app.use(express.static('public'));
 app.use(express.json())
 app.use(session({
     secret:'haha',
     resave:false,
     saveUninitialized:'false'
 }))
+app.use((req,res,next)=>{
+    res.locals.message=req.session.message
+    delete req.session.message
+    next()
+})
 app.listen(5000,()=>{
     console.log("server started at  http://localhost:5000");
 })
 app.set('view engine','ejs');
 app.use(router);
+app.use("/",(req,res)=>{
+    res.redirect("/login");
+})
