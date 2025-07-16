@@ -21,7 +21,7 @@ app.use((req,res,next)=>{
     next()
 })
 app.listen(5000,()=>{
-    console.log("server started at  http://localhost:5000");
+    console.log("server started at  http://localhost:5000/login");
 })
 app.set('view engine','ejs');
 app.use(router);

@@ -10,6 +10,7 @@ const admincheck = async (req, res) => {
         const users = await user.findOne({ email });
         if (email == users.email && password == users.password) {
             if (users.role == true) {
+                req.session.user = users._id;                
                 res.redirect("/addhome");
             }
             else {
@@ -58,4 +59,44 @@ const added = async (req, res) => {
         res.status(404).send(err)
     }
 }
-export { admincheck, useradd, admin, added, login,edituser }
+const deleteuser = async(req,res)=>{
+    const userid = req.params.id
+    try{
+        await user.findByIdAndDelete(userid);
+        res.status(200).json({
+            success:true
+        });
+    }
+    catch(err){
+        res.send(err);
+    }
+}
+const editpage =async(req,res)=>{
+    try{
+        const userdata = await user.findById(req.params.id)
+        res.render("edituser",{title:"edit user page",users:userdata})
+    }
+    catch(err)
+    {
+        res.status(500).send("user not found")
+    }
+}
+const edituser = async(req,res)=>{
+    const userid= req.params.id
+    console.log(userid);
+    
+    try{
+        await user.findByIdAndUpdate(userid,{
+            name:req.body.name,
+            email: req.body.email,
+            password: req.body.password,
+            phone: req.body.phone
+        })
+        res.redirect("/addhome")
+    }
+    catch(err){
+        res.send(alert("User not Deleted"))
+        console.log(err);
+    }
+}
+export { admincheck, useradd, admin, added, login,deleteuser,edituser,editpage }
