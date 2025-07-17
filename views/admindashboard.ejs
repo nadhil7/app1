@@ -55,12 +55,19 @@
             const response = await fetch(`/delete/${id}`,{
                 method:"DELETE",
             })
-            const resjson =await response.json();                
+            const resjson =await response.json(); 
+           const con = confirm("are you sure?")       
+           if(con == true)
+           {
             if(resjson.success==true)
                 {
                     alert("User Deleted!")
                     window.location.reload()
-                }    
+                } 
+           }   else{
+            alert("user not deleted!")
+           }     
+               
         }
     </script>
 </html>

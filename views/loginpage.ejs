@@ -44,7 +44,21 @@
     </div>
   </div>
 </div>
-
+     <div class="w-5/6 m-auto h-10">
+                <% if (message) { %>
+                    <div class="flex items-center justify-between p-4 mb-4 rounded-lg shadow text-white
+              <%= message.type == 'success' ? 'bg-green-500' : 
+                  message.type == 'danger'? 'bg-red-500' :'bg-blue-500' %>">
+                        <strong>
+                            <%= message.message %>
+                        </strong>
+                        <button class="text-white hover:text-gray-200 text-xl font-bold leading-none"
+                            onclick="this.parentElement.remove()" aria-label="Close">
+                            &times;
+                        </button>
+                    </div>
+                    <% } %>
+            </div>
     <div class="flex justify-center h-full w-screen items-center">
       <form action="/adminpage" method="POST" class="w-full md:w-1/2 flex flex-col items-center">
         <!-- text login -->

@@ -9,21 +9,29 @@ const admincheck = async (req, res) => {
     const { email, password } = req.body;
     try {
         const userdata = await user.findOne({ email });
+
         if (!userdata) {
-            res.status(404).send("no email matching")
+            req.session.message = {
+                type: "danger",
+                message: "No user found"
+            }
         }
         if (!userdata.role) {
-            res.status(404).send("authentication rejected :- login for admin only")
+            req.session.message = {
+                type: "danger",
+                message: "Not An Admin !"
+            }
         }
         const match = await bcrypt.compare(password, userdata.password)
-        if(!match)
-        {
-            res.status(404).send("authentication rejected :- password didn't match")
-
+        if (!match) {
+            req.session.message = {
+                type: "danger",
+                message: "Password didn't Match!"
+            }
         }
-        req.session.user=userdata;
+        req.session.user = userdata;
         res.redirect("/addhome")
-    } catch(err){
+    } catch (err) {
         res.send(err);
     }
 
@@ -92,7 +100,6 @@ const edituser = async (req, res) => {
         await user.findByIdAndUpdate(userid, {
             name: req.body.name,
             email: req.body.email,
-            password: req.body.password,
             phone: req.body.phone
         })
         res.redirect("/addhome")
@@ -102,16 +109,16 @@ const edituser = async (req, res) => {
         console.log(err);
     }
 }
-const logout = (req,res)=>{
-    req.session.destroy((err)=>{
-        if(err){
-            return res.status(500).json({success:false})
+const logout = (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).json({ success: false })
         }
-        else{
-            res.json({success:true})
-            
+        else {
+            res.json({ success: true })
+
         }
     })
 
 }
-export { admincheck, useradd, admin, added, login, deleteuser, edituser, editpage,logout }
+export { admincheck, useradd, admin, added, login, deleteuser, edituser, editpage, logout }
