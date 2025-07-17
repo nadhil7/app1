@@ -4,9 +4,9 @@
       <div class="flex items-center justify-between py-4">
 
         <div class="hidden sm:flex sm:items-center">
-          <a href="/addhome" class="text-gray-800 text-sm font-semibold hover:text-purple-600 mr-4">home</a>
-          <a href="/adduser " class="text-gray-800 text-sm font-semibold hover:text-purple-600 mr-4">Add Users</a>
-          <a href="#" class="text-gray-800 text-sm font-semibold hover:text-purple-600 mr-4">About</a>
+          <a href="/admin/addhome" class="text-gray-800 text-sm font-semibold hover:text-purple-600 mr-4">home</a>
+          <a href="/admin/adduser " class="text-gray-800 text-sm font-semibold hover:text-purple-600 mr-4">Add Users</a>
+          <a href="/product/products" class="text-gray-800 text-sm font-semibold hover:text-purple-600 mr-4">Products</a>
           <a href="#" class="text-gray-800 text-sm font-semibold hover:text-purple-600">Contact</a>
         </div>
        <p onclick="logout()"> <button class="
@@ -41,7 +41,7 @@
           </span>
 
           <p class="group-hover:opacity-0 group-hover:translate-x-[-100%] absolute translate-x-0 transition-all
-         duration-200">dont click</p>
+         duration-200">Logout?</p>
 
           <span 
             class="group-hover:translate-x-0  group-hover:opacity-100 absolute  translate-x-full opacity-0  transition-all duration-200">logout
@@ -73,11 +73,11 @@
 <script>
   const logout = async()=>{
     try{
-      const res = await fetch("/logout")
+      const res = await fetch("/admin/logout")
       const data = await res.json();
       if(data.success==true){
         alert("logout succesfully")
-        window.location.href="/login"
+        window.location.href="/admin/login"
       }
       else{
         alert("logout failed")

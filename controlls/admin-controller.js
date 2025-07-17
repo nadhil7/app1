@@ -9,29 +9,35 @@ const admincheck = async (req, res) => {
     const { email, password } = req.body;
     try {
         const userdata = await user.findOne({ email });
-
         if (!userdata) {
             req.session.message = {
                 type: "danger",
                 message: "No user found"
             }
-        }
-        if (!userdata.role) {
-            req.session.message = {
-                type: "danger",
-                message: "Not An Admin !"
-            }
+            res.redirect("/admin/login")
         }
         const match = await bcrypt.compare(password, userdata.password)
-        if (!match) {
-            req.session.message = {
-                type: "danger",
-                message: "Password didn't Match!"
+          if (!match) {
+                req.session.message = {
+                    type: "danger",
+                    message: "Password didn't Match!"
+                }
+                res.redirect("/admin/login")
             }
+        if (userdata.role == true) {
+            req.session.user = userdata;
+            res.redirect("/admin/addhome")
         }
-        req.session.user = userdata;
-        res.redirect("/addhome")
+        if(userdata.role==false)
+        {
+            req.session.user = userdata;
+            res.redirect("/user/userhome")
+        }
+        else{
+                res.redirect("/admin/login")
+        }
     } catch (err) {
+        console.log(err);
         res.send(err);
     }
 
@@ -67,7 +73,7 @@ const added = async (req, res) => {
             type: "success",
             message: "User added successfully"
         }
-        res.redirect("/addhome")
+        res.redirect("/admin/addhome")
     }
     catch (err) {
         res.status(404).send(err)
@@ -80,6 +86,10 @@ const deleteuser = async (req, res) => {
         res.status(200).json({
             success: true
         });
+        req.session.message = {
+            type: "danger",
+            message: "user deleted !"
+        }
     }
     catch (err) {
         res.send(err);
@@ -102,10 +112,14 @@ const edituser = async (req, res) => {
             email: req.body.email,
             phone: req.body.phone
         })
-        res.redirect("/addhome")
+        req.session.message = {
+            type: "success",
+            message: "user details updated"
+        }
+        res.redirect("/admin/addhome")
     }
     catch (err) {
-        res.send(alert("User not Deleted"))
+        res.send(alert(err))
         console.log(err);
     }
 }

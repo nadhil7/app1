@@ -3,12 +3,12 @@ const router = express.Router();
 import {login,useradd,admin,added,admincheck,deleteuser,edituser,editpage,logout} from '../controlls/admin-controller.js'
 router.get("/login",login)
 router.post("/adminpage",admincheck)
-router.use("/",(req,res,next)=>{
+router.use("/admin",(req,res,next)=>{
     if(req.session.user){
         next();
     }
     else{
-        res.redirect("/login")
+        res.redirect("/admin/login")
     }
 })
 router.get("/addhome",admin)

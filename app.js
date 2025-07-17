@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import session from 'express-session';
 import router from './routers/router.js';
+import userRouter from './routers/userRouter.js';
 import productRouter from './routers/router-products.js';
 const uri ='mongodb://127.0.0.1:27017/app1'
 mongoose.connect(uri).then(()=>{
@@ -25,8 +26,9 @@ app.listen(5000,()=>{
     console.log("server started at  http://localhost:5000/login");
 })
 app.set('view engine','ejs');
-app.use(router);
-app.use(productRouter);
+app.use("/admin",router);
+app.use("/product",productRouter);
+app.use("/user",userRouter);
 app.use("/",(req,res)=>{
-    res.redirect("/login");
+    res.redirect("/admin/login");
 })
