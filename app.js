@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import session from 'express-session';
 import router from './routers/router.js';
+import productRouter from './routers/router-products.js';
 const uri ='mongodb://127.0.0.1:27017/app1'
 mongoose.connect(uri).then(()=>{
     console.log("database connected");
@@ -25,6 +26,7 @@ app.listen(5000,()=>{
 })
 app.set('view engine','ejs');
 app.use(router);
+app.use(productRouter);
 app.use("/",(req,res)=>{
     res.redirect("/login");
 })

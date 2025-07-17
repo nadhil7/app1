@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import {login,useradd,admin,added,admincheck,deleteuser,edituser,editpage} from '../controlls/admin-controller.js'
+import {login,useradd,admin,added,admincheck,deleteuser,edituser,editpage,logout} from '../controlls/admin-controller.js'
 router.get("/login",login)
 router.post("/adminpage",admincheck)
 router.use("/",(req,res,next)=>{
@@ -8,7 +8,7 @@ router.use("/",(req,res,next)=>{
         next();
     }
     else{
-        res.send("Entry Restricted!");
+        res.redirect("/login")
     }
 })
 router.get("/addhome",admin)
@@ -17,4 +17,5 @@ router.delete("/delete/:id",deleteuser)
 router.post("/add",added)
 router.get("/editpage/:id",editpage)
 router.post("/edituser/:id",edituser)
+router.get("/logout",logout)
 export default router
