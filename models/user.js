@@ -16,6 +16,10 @@ const usermodel = new schema({
     role:{
         type:Boolean,
         default:false
+    },
+    status:{
+        type:Boolean,
+        default:true
     }
 })      
 const user = mongoose.model("user",usermodel,'user');

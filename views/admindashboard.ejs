@@ -29,6 +29,7 @@
                             <th class="py-2 px-4 text-left">Email</th>
                             <th class="py-2 px-4 text-left">Phone</th>
                             <th class="py-2 px-4 text-left">Action</th>
+                            <th class="py-2 px-4 text-left">Active</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -41,6 +42,9 @@
                                 <td class="py-2 px-4"><%= row.phone %></td>
                                 <td class="py-2 px-2 flex items-center justify-evenly mt-4 gap-8"><a href="/admin/editpage/<%= row._id %>"><img src="/edit.png"
                                             alt=""></a><p><img src="/delete.png" alt="" onclick="deleteuser('<%= row._id%>')"></p></td>
+                                <td class="py-2 px-4"><a href="/admin/active/<%= row._id %>"<%= row.status ==true ?'bg-green-500':'bg-red-500' %> onclick="status('<%= row._id%>','<%= row.status%>')">
+                                <%= row.status==true? 'Active':'Inactive'%></a></td>
+
                             </tr>
                             <% }}) %>
                     </tbody>
@@ -57,20 +61,39 @@
             const response = await fetch(`/admin/delete/${id}`,{
                 method:"DELETE",
             })
-            const resjson =await response.json(); 
+            const resjson =await response.json();  
            const con = confirm("are you sure?")       
            if(con == true)
            {
             if(resjson.success==true)
                 {
                     alert("User Deleted!")
-                    
                     window.location.reload()
                 } 
            }   else{
             alert("user not deleted!")
            }     
                
+        }
+        const status =async(id,status)=>{
+            const newstat = status==false?true:false
+            const res = await fetch(`/admin/active/${id}`,{
+                method:"PATCH",
+                headers:{"Content-Type":"application/json"},
+                body:JSON.stringify({
+                    status:newstat
+                })
+            })
+            const data = await res.json()
+            if(data.success==true)
+            {
+                alert("status Updated")
+                window.location.reload();
+
+            }
+            else{
+                alert("status not updated")
+            }
         }
     </script>
 </html>

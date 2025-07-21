@@ -14,28 +14,25 @@ const admincheck = async (req, res) => {
                 type: "danger",
                 message: "No user found"
             }
-            res.redirect("/admin/login")
+            return res.redirect("/admin/login")
         }
         const match = await bcrypt.compare(password, userdata.password)
-          if (!match) {
-                req.session.message = {
-                    type: "danger",
-                    message: "Password didn't Match!"
-                }
-                res.redirect("/admin/login")
+        if (!match) {
+            req.session.message = {
+                type: "danger",
+                message: "Password didn't Match!"
             }
+            return res.redirect("/admin/login")
+        }
         if (userdata.role == true) {
             req.session.user = userdata;
-            res.redirect("/admin/addhome")
+            return res.redirect("/admin/addhome")
         }
-        if(userdata.role==false)
-        {
+        if (userdata.role == false) {
             req.session.user = userdata;
-            res.redirect("/user/userhome")
+            return res.redirect("/user/userhome")
         }
-        else{
-                res.redirect("/admin/login")
-        }
+        return res.redirect("/admin/login")
     } catch (err) {
         console.log(err);
         res.send(err);
@@ -134,5 +131,23 @@ const logout = (req, res) => {
         }
     })
 
+}
+export const active=async (req,res)=>{
+    const userid = req.params.id
+    try{
+        await user.findByIdAndUpdate(userid,{
+            status:req.body.status
+        })
+        return res.json({
+            success:true
+        })
+    }
+    catch(err){
+        console.log(err);
+        return res.json({
+            success:false
+        })
+        
+    }
 }
 export { admincheck, useradd, admin, added, login, deleteuser, edituser, editpage, logout }
