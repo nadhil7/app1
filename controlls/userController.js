@@ -5,4 +5,3 @@ export const userhome = (req,res)=>{
     res.render("userpage",{title:"userHome-Page"})
 }
 
-nme
