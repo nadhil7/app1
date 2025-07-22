@@ -33,4 +33,3 @@ app.use("/",(req,res)=>{
     res.redirect("/admin/login");
 })
 
-name
