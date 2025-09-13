@@ -32,4 +32,3 @@ app.use("/user",userRouter);
 app.use("/",(req,res)=>{
     res.redirect("/admin/login");
 })
-
